@@ -34,6 +34,8 @@ void udp_transport::bind()
     udp::resolver resolver(io_service);
     udp::resolver::query query(udp::v4(), "127.0.0.1", "daytime");
     receiver_endpoint = *resolver.resolve(query);
+    socket_ = boost::make_shared<udp::socket>(boost::ref(io_service));
     socket_->open(udp::v4());
+    socket_->send_to(boost::asio::buffer(recv_buf), receiver_endpoint);
     
 }
